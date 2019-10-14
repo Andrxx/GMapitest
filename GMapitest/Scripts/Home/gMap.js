@@ -25,13 +25,13 @@
         }
     },
 
-    renderMap: function (locations)
+    renderMap: function (locations, )
     {
         //установка начала координат, если не определится местоположение 
         let mapCenter;
-        if (!gMap.isPoint(mapCenter))
+        if (!gMap._isPoint(mapCenter))
         {
-            mapCenter = gMap.getCenter(locations);
+            mapCenter = gMap._getCenter(locations);
         }
         gMap.mymap.bounds = new google.maps.LatLngBounds();
         //берем настройки из params 
@@ -44,7 +44,7 @@
             // Установка  маркеров
             for (let i = 0; i < locations.length; i++)
             {
-                if (gMap.isPoint(locations[i]))
+                if (gMap._isPoint(locations[i]))
                 {
                     let location = new google.maps.LatLng(locations[i].lat, locations[i].lng);
                     let infowindow = new google.maps.InfoWindow({
@@ -62,11 +62,11 @@
                     });
                     gMap.mymap.bounds.extend(location);
 
-                    if (gMap.isInDestination(locations[i], locations[i].radius, newlocation))
+                    if (gMap._isInDestination(locations[i], locations[i].radius, newlocation))
                     {
                         //gMap.mymap.bounds.extend(location);
                         let circle = new google.maps.Circle({ radius: locations[i].radius, center: location, map: gMap.mymap.map });
-                        gMap.setUser(newlocation);
+                        gMap._setUser(newlocation);
                     }
                 }
                     else
@@ -83,7 +83,7 @@
         });
     },
 
-    isPoint: function (location) {
+    _isPoint: function (location) {
         if (location === undefined
             || location === null
             || isNaN(location.lat)
@@ -109,7 +109,7 @@
         }
     },
 
-    geolocationSuccess: function (position) {
+    _geolocationSuccess: function (position) {
         // Преобразуем местоположение в объект LatLng
         let location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         // Отображаем эту точку на карте
@@ -124,14 +124,13 @@
         }
     },
 
-    geolocationFailure: function (positionError)
+    _geolocationFailure: function (positionError)
     {
         //console.log(positionError);
         //goToDefaultLocation();
     },
 
-
-    getCenter: function (locations)
+    _getCenter: function (locations)
     {
         let lat = 0;
         let lng = 0;
@@ -146,7 +145,7 @@
         return centerLocation;
     },
 
-    isInDestination: function (center, radius, point)
+    _isInDestination: function (center, radius, point)
     {
         let isInside = false;
         let _center = new google.maps.LatLng(center.lat, center.lng);
@@ -156,18 +155,15 @@
         return isInside;
     },
 
-    setUser: function (location)
+    _setUser: function (location)
     {
         console.log(location);
-        //let image = '/LocLogo.png';
         let image = {
             url: '/LocLogo.png',
             size: new google.maps.Size(40, 40),
             scaledSize: new google.maps.Size(25, 25)
         };
-
-        let _location = new google.maps.LatLng(+location.lat, +location.lng);
-        //if (_location)
+        let _location = new google.maps.LatLng(location.lat, location.lng);
         console.log(_location);
         let marker = new google.maps.Marker(
             {
@@ -175,7 +171,6 @@
                 map: gMap.mymap.map,
                 title: 'Вы здесь',
                 icon: image,
-
             });
         gMap.mymap.bounds.extend(_location);
     }
