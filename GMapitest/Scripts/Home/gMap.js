@@ -66,7 +66,7 @@
                     {
                         //gMap.mymap.bounds.extend(location);
                         let circle = new google.maps.Circle({ radius: locations[i].radius, center: location, map: gMap.mymap.map });
-                        gMap._setUser(newlocation);
+                        //gMap._setUser(newlocation);
                     }
                 }
                     else
@@ -102,7 +102,7 @@
         if (navigator.geolocation)
         {
             navigator.geolocation.getCurrentPosition(
-                gMap.geolocationSuccess, gMap.geolocationFailure);
+                gMap._geolocationSuccess, gMap._geolocationFailure);
         } else
         {
             console.log("Геолокация не поддерживается вашим устройством");
@@ -115,19 +115,19 @@
         // Отображаем эту точку на карте
         if (position.coords.accuracy < 5000) {
             //gMap.mymap.map.setCenter(location);
-            gMap.setUser(location);
+            gMap._setUser(location);
         }
         else
         { 
             console.log(position.coords.accuracy);
-            //alert('Координаты определены с погрешностью.');
+            alert('Координаты определены с погрешностью.');
         }
     },
 
     _geolocationFailure: function (positionError)
     {
-        //console.log(positionError);
-        //goToDefaultLocation();
+        console.log(positionError);
+        alert('Позиция не определена');
     },
 
     _getCenter: function (locations)
@@ -161,18 +161,17 @@
         let image = {
             url: '/LocLogo.png',
             size: new google.maps.Size(40, 40),
-            scaledSize: new google.maps.Size(25, 25)
+            scaledSize: new google.maps.Size(55, 55)
         };
-        let _location = new google.maps.LatLng(location.lat, location.lng);
-        console.log(_location);
         let marker = new google.maps.Marker(
             {
-                position: _location,
+                position: location,
                 map: gMap.mymap.map,
                 title: 'Вы здесь',
                 icon: image,
             });
-        gMap.mymap.bounds.extend(_location);
+        //alert('marker');
+        gMap.mymap.bounds.extend(location);
     }
 };
 
