@@ -9,27 +9,33 @@
 </div>
 <div class="row">
     <div class="col-md-4">
-      @*<img src="~/LocLogo.png"*@
+        @*<img src="~/LocLogo.png"*@
         <button class="redStyle" id="gmtest">Нажать</button> <br />
     </div>
 </div>
 
 
 <div class="row">
-    <div class="col-md-8" id="map">
-        
+    <div class="col-md-8 map" id="map">
+
+    </div>
+</div>
+
+<button class="redStyle" id="gmtest1">Нажать</button> <br />
+
+<div class="row">
+
+    <div class="col-md-8 map" id="map1">
+
     </div>
 </div>
 
 <script src="~/Scripts/Home/gMap.js"></script>
 
 <script>
-    $('#gmtest').click(function ()
-    {
-        //let lat = 23.44;
-        //let lng = 44.976;
+    $('#gmtest').click(function () {
         let locations =
-        [
+            [
                 {
                     lat: 43.5868685,
                     lng: 39.7299474,
@@ -49,7 +55,7 @@
                     lng: 39.7218364,
                     description: 'третья точка',
                     img: 'some url',
-                    radius:500,
+                    radius: 500,
                 },
                 {
                     lat: 43.593971,
@@ -57,18 +63,47 @@
                     description: 'четвертая точка',
                     img: 'some url',
                     radius: 500,
+                    //cssClass: abc;
                 },
-        ];
+            ];
 
         let m = gMap;
         m.init();
-        m.renderMap(locations);
+        m.renderMap(locations, 'map');
         m.showDestination(locations, null, true);
-        m.getLocation();
+        //m.getLocation();
     });
 </script>
 
 
+<script>
+    $('#gmtest1').click(function () {
+        let locations =
+            [
+                {
+                    lat: 43.5868685,
+                    lng: 39.7299474,
+                    description: 'первая точка',
+                    img: 'some url',
+                    radius: 500,
+                },
+                {
+                    lat: 43.6085269,
+                    lng: 39.7313797,
+                    description: 'вторая точка',
+                    img: 'some url',
+                    radius: 500,
+                },
+            ];
+
+        let m = gMap;
+        m.init();
+        m.renderMap(locations, 'map1');
+        m.showDestination(locations, null, false);
+        //gm.getLocation();
+    });
+</script>
+
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHZIqG64ECD89gO7f4e_LbXJwkpnl4Gq0&libraries=geometry"> 
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHZIqG64ECD89gO7f4e_LbXJwkpnl4Gq0&libraries=geometry">
 </script>

@@ -17,16 +17,18 @@
         {
             gMap.runOnce = true;
             gMap.options = $.extend(gMap.options, options);
-            gMap.mymap.map = new google.maps.Map(document.getElementById('map'));
+            //gMap.mymap.map = new google.maps.Map(document.getElementById(gMap.options.tagIg));
             gMap.mymap.bounds = new google.maps.LatLngBounds(); //объявление границ карты
             //gMap.getLocation();
         }
     },
 
-    renderMap: function (locations, showRegions = true, findUser = true) {
+    renderMap: function (locations, tagId, showRegions = true, findUser = true) {
         //берем настройки из params 
+        gMap.mymap.map = new google.maps.Map(document.getElementById(tagId));
         //визуализация в контейнере
         $(function initMap() {
+            
             // Установка  маркеров
             for (let i = 0; i < locations.length; i++) {
                 if (gMap._isPoint(locations[i])) {
@@ -131,7 +133,7 @@
     },
 
     showDestination: function (locations, userLocation, showAll = false) {
-        if (!userLocation) userLocation = gMap._getCenter(locations);
+        //if (!userLocation) userLocation = gMap._getCenter(locations);
         for (let i = 0; i < locations.length; i++) {
             if (showAll || gMap._isInDestination(locations[i], locations[i].radius, userLocation)) {
                 let circle = new google.maps.Circle({ radius: locations[i].radius, center: locations[i], map: gMap.mymap.map });
@@ -139,8 +141,9 @@
         }
     },
 
-    _isInDestination: function (center, radius, point) {
+    _isInDestination: function (center, radius, point) {       
         let isInside = false;
+        if (gMap._isPoint(center) || gMap._isPoint(point)) return isInside;
         let _center = new google.maps.LatLng(center.lat, center.lng);
         let _point = new google.maps.LatLng(point.lat, point.lng);
         let distance = google.maps.geometry.spherical.computeDistanceBetween(_center, _point);
