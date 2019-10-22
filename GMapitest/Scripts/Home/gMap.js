@@ -24,18 +24,21 @@
     },
 
     renderMap: function (locations, tagId, showRegions = true, findUser = true) {
+        console.log(locations);
+        let _locations = JSON.parse(locations);
+        console.log(_locations);
         //берем настройки из params 
         gMap.mymap.map = new google.maps.Map(document.getElementById(tagId));
         //визуализация в контейнере
-        $(function initMap() {
-            
+        $(function initMap() {           
             // Установка  маркеров
-            for (let i = 0; i < locations.length; i++) {
-                if (gMap._isPoint(locations[i])) {
-                    let location = new google.maps.LatLng(locations[i].lat, locations[i].lng);
+            for (let i = 0; i < _locations.length; i++) {
+                //console.log(locations[i]);
+                if (gMap._isPoint(_locations[i])) {
+                    let location = new google.maps.LatLng(_locations[i].lat, _locations[i].lng);                   
                     let infowindow = new google.maps.InfoWindow(
                         {
-                            content: locations[i].description,
+                            content: _locations[i].description,
                         });
                     let marker = new google.maps.Marker(
                         {
@@ -53,8 +56,7 @@
                     continue;
                 }
                 gMap.mymap.map.fitBounds(gMap.mymap.bounds);
-                //gMap.getLocation();
-                
+                //gMap.getLocation();          
             }
             //gMap.showUser();
             //gMap.getLocation();

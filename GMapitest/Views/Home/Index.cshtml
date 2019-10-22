@@ -66,10 +66,11 @@
                     //cssClass: abc;
                 },
             ];
-
+        let serialized = JSON.stringify(locations);
+        console.log(serialized);
         let m = gMap;
         m.init();
-        m.renderMap(locations, 'map');
+        m.renderMap(serialized, 'map');
         m.showDestination(locations, null, true);
         //m.getLocation();
     });
@@ -95,10 +96,10 @@
                     radius: 500,
                 },
             ];
-
+        let serialized = JSON.stringify(locations);
         let gm = gMap;
         gm.init();
-        gm.renderMap(locations, 'map1');
+        gm.renderMap(serialized, 'map1');
         gm.showDestination(locations, null, false);
         //gm.getLocation();
     });
