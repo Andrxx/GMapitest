@@ -23,10 +23,12 @@
         }
     },
 
-    renderMap: function (locations, tagId, showRegions = true, findUser = true) {
-        console.log(locations);
-        let _locations = JSON.parse(locations);
-        console.log(_locations);
+    renderMap: function (container, tagId, showRegions = true, findUser = true) {
+        //console.log(container);
+        let _container = JSON.parse(container);
+        //console.log(_container);
+        let _locations = _container.locations;
+        //console.log(_locations);
         //берем настройки из params 
         gMap.mymap.map = new google.maps.Map(document.getElementById(tagId));
         //визуализация в контейнере
@@ -44,7 +46,7 @@
                         {
                             position: location,
                             map: gMap.mymap.map,
-                            title: locations[i].description
+                            title: _locations[i].description
                         });
                     marker.addListener('click', function () {
                         infowindow.open(gMap.mymap.map, marker);
@@ -135,10 +137,11 @@
     },
 
     showDestination: function (locations, userLocation, showAll = false) {
-        //if (!userLocation) userLocation = gMap._getCenter(locations);
-        for (let i = 0; i < locations.length; i++) {
+        if (!userLocation) userLocation = gMap._getCenter(locations);
+        let _locations = JSON.parse(locations);
+        for (let i = 0; i < _locations.length; i++) {
             if (showAll || gMap._isInDestination(locations[i], locations[i].radius, userLocation)) {
-                let circle = new google.maps.Circle({ radius: locations[i].radius, center: locations[i], map: gMap.mymap.map });
+                let circle = new google.maps.Circle({ radius: _locations[i].radius, center: _locations[i], map: gMap.mymap.map });
             }
         }
     },

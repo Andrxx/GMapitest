@@ -36,7 +36,7 @@
     $('#gmtest').click(function () {
         let container =
         {
-            options: [ 'some option' ],
+            options: 'some option' ,
             locations:
                 [
                     {
@@ -71,12 +71,12 @@
                 ]
         };
         let _container = JSON.stringify(container);
-        console.log(_container);
-        let locations = _container["locations"];
-        console.log(locations);
+        //console.log(_container);
         let m = gMap;
         m.init();
-        m.renderMap(locations, 'map');
+        m.renderMap(_container, 'map');
+        let locations = JSON.stringify(container.locations);
+        console.log(locations);
         m.showDestination(locations, null, true);
         //m.getLocation();
     });
@@ -85,7 +85,10 @@
 
 <script>
     $('#gmtest1').click(function () {
-        let locations =
+        let container =
+        {
+            options: 'some option',
+            locations:
             [
                 {
                     lat: 43.5868685,
@@ -101,11 +104,15 @@
                     img: 'some url',
                     radius: 500,
                 },
-            ];
-        let serialized = JSON.stringify(locations);
+
+            ]
+        };
+
+        let _container = JSON.stringify(container);
+        let locations = JSON.stringify(container.locations);
         let gm = gMap;
         gm.init();
-        gm.renderMap(serialized, 'map1');
+        gm.renderMap(_container, 'map1');
         gm.showDestination(locations, null, false);
         //gm.getLocation();
     });
