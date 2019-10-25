@@ -39,10 +39,9 @@
             options:
             {
                 userLocation: true,
-                showAllRegions: true,
+                showAllRegions: false,
                 showLocationInRange: true,
             },
-
 
             locations:
                 [
@@ -59,7 +58,7 @@
                         lng: 39.7313797,
                         description: 'вторая точка',
                         img: 'some url',
-                        radius: 500,
+                        radius: 1000,
                         cssClass: 'abc',
                     },
                     {
@@ -93,34 +92,54 @@
     $('#gmtest1').click(function () {
         let container =
         {
-            options: 'some option',
+            options:
+            {
+                userLocation: false,
+                showAllRegions: true,
+                showLocationInRange: false,
+            },
+
             locations:
             [
-                {
-                    lat: 43.5868685,
-                    lng: 39.7299474,
-                    description: 'первая точка',
-                    img: 'some url',
-                    radius: 500,
-                },
-                {
-                    lat: 43.6085269,
-                    lng: 39.7313797,
-                    description: 'вторая точка',
-                    img: 'some url',
-                    radius: 500,
-                },
-
+                    {
+                        lat: 43.5868685,
+                        lng: 39.7299474,
+                        description: 'первая точка',
+                        img: 'some url',
+                        radius: 500,
+                        cssClass: 'abc',
+                    },
+                    {
+                        lat: 43.6085269,
+                        lng: 39.7313797,
+                        description: 'вторая точка',
+                        img: 'some url',
+                        radius: 1000,
+                        cssClass: 'abc',
+                    },
+                    {
+                        lat: 43.6191221,
+                        lng: 39.7218364,
+                        description: 'третья точка',
+                        img: 'some url',
+                        radius: 500,
+                        cssClass: 'abc',
+                    },
+                    {
+                        lat: 43.593971,
+                        lng: 39.736433,
+                        description: 'четвертая точка',
+                        img: 'some url',
+                        radius: 500,
+                        cssClass: 'abc',
+                    },
             ]
         };
 
         let _container = JSON.stringify(container);
-        let locations = JSON.stringify(container.locations);
         let gm = gMap;
         gm.init();
-        gm.renderMap(_container, 'map1');
-        gm.showDestination(locations, null, false);
-        //gm.getLocation();
+        gm.initMap(_container, 'map1');
     });
 </script>
 

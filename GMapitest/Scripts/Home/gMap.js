@@ -32,22 +32,24 @@
         let _locations = _container.locations;
         //создаем карту
         gMap.mymap.map = new google.maps.Map(document.getElementById(tagId));
-        //разбор настроек и определение порядка очередности вызовов
-        let geolocation = _container.options.userLocation;
-        let regions = _container.options.showAllRegions;
-        console.log(regions);
-        if (geolocation) {
-            //alert('true');
+
+        if (_container.options.userLocation)
+        {
             gMap._getLocation();
-            console.log(gMap.mymap.userLocation);
             gMap._renderMap(_locations);
+            if (_container.options.showLocationInRange)
+            {
+                let center = gMap._getCenter(_locations);
+                gMap._showUser(center);
+                gMap._showDestination(_locations, center, false);
+            }
         }
         else
         {
             gMap._renderMap(_locations);
         }
         //отображаем все радиусы доступа
-        if (regions)
+        if (_container.options.showAllRegions)
         {
             gMap._showDestination(_locations, null, true);
         }
@@ -103,9 +105,10 @@
         let location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         // Отображаем эту точку на карте
         if (position.coords.accuracy < 5000) {
-            gMap.showUser(location);
+            gMap._showUser(location);
             gMap.mymap.bounds.extend(location);
             console.log(position.coords.accuracy);
+            gMap.mymap.userLocation = location;
         }
         else {
             console.log(position.coords.accuracy);
@@ -118,7 +121,7 @@
         alert('Позиция не определена');
     },
 
-    showUser: function (location)
+    _showUser: function (location)
     {
         gMap.mymap.userLocation = location;
         let image = {
@@ -137,8 +140,6 @@
         gMap.mymap.bounds.extend(location);
     },
 
-    //_setUser: function
-
     //проверка корректности позиции
     _isPoint: function (location) {
         if (location === undefined
@@ -153,19 +154,23 @@
         else return true;
     },
 
-    _showDestination: function (locations, userLocation, showAll = false) {
-        if (!userLocation) userLocation = gMap._getCenter(locations);
-        //let _locations = JSON.parse(locations);
-        for (let i = 0; i < locations.length; i++) {
-            if (showAll || gMap._isInDestination(locations[i], locations[i].radius, userLocation)) {
+    _showDestination: function (locations, userLocation, showAll = false)
+    {
+        //if (!userLocation) userLocation = gMap._getCenter(locations);
+        for (let i = 0; i < locations.length; i++)
+        {
+            console.log(locations[i]);
+            if (showAll || gMap._isInDestination(locations[i], locations[i].radius, userLocation))
+            {
                 let circle = new google.maps.Circle({ radius: locations[i].radius, center: locations[i], map: gMap.mymap.map });
             }
         }
     },
 
-    _isInDestination: function (center, radius, point) {       
+    _isInDestination: function (center, radius, point)
+    {
         let isInside = false;
-        if (gMap._isPoint(center) || gMap._isPoint(point)) return isInside;
+        //if (gMap._isPoint(center) || gMap._isPoint(point)) return isInside;
         let _center = new google.maps.LatLng(center.lat, center.lng);
         let _point = new google.maps.LatLng(point.lat, point.lng);
         let distance = google.maps.geometry.spherical.computeDistanceBetween(_center, _point);
