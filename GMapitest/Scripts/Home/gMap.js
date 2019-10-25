@@ -159,7 +159,6 @@
         //if (!userLocation) userLocation = gMap._getCenter(locations);
         for (let i = 0; i < locations.length; i++)
         {
-            console.log(locations[i]);
             if (showAll || gMap._isInDestination(locations[i], locations[i].radius, userLocation))
             {
                 let circle = new google.maps.Circle({ radius: locations[i].radius, center: locations[i], map: gMap.mymap.map });
