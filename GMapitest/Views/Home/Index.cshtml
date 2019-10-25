@@ -36,7 +36,14 @@
     $('#gmtest').click(function () {
         let container =
         {
-            options: 'some option' ,
+            options:
+            {
+                userLocation: true,
+                showAllRegions: true,
+                showLocationInRange: true,
+            },
+
+
             locations:
                 [
                     {
@@ -45,6 +52,7 @@
                         description: 'первая точка',
                         img: 'some url',
                         radius: 500,
+                        cssClass: 'abc',
                     },
                     {
                         lat: 43.6085269,
@@ -52,6 +60,7 @@
                         description: 'вторая точка',
                         img: 'some url',
                         radius: 500,
+                        cssClass: 'abc',
                     },
                     {
                         lat: 43.6191221,
@@ -59,6 +68,7 @@
                         description: 'третья точка',
                         img: 'some url',
                         radius: 500,
+                        cssClass: 'abc',
                     },
                     {
                         lat: 43.593971,
@@ -66,19 +76,15 @@
                         description: 'четвертая точка',
                         img: 'some url',
                         radius: 500,
-                        //cssClass: abc;
+                        cssClass: 'abc',
                     },
                 ]
         };
+
         let _container = JSON.stringify(container);
-        //console.log(_container);
         let m = gMap;
         m.init();
-        m.renderMap(_container, 'map');
-        let locations = JSON.stringify(container.locations);
-        console.log(locations);
-        m.showDestination(locations, null, true);
-        //m.getLocation();
+        m.initMap(_container, 'map');
     });
 </script>
 
