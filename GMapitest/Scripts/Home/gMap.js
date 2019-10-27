@@ -20,12 +20,11 @@
             gMap.options = $.extend(gMap.options, options);
             //gMap.mymap.map = new google.maps.Map(document.getElementById(gMap.options.tagIg));
             gMap.mymap.bounds = new google.maps.LatLngBounds(); //объявление границ карты
-            //gMap.getLocation();
-            
         }
     },
 
     initMap: function (container, tagId) {
+        console.log('initMap');
         //парсим контейнер
         let _container = JSON.parse(container);
         //console.log(_container);
@@ -35,12 +34,15 @@
 
         if (_container.options.userLocation)
         {
-            gMap._getLocation();
+            let userLoc = gMap._getLocation(/*callback(gMap._showUser)*/);//.then(console.log(gMap.mymap.userLocation));
+            console.log(userLoc);
             gMap._renderMap(_locations);
             if (_container.options.showLocationInRange)
             {
-                let center = gMap._getCenter(_locations);
-                gMap._showUser(center);
+                //let center = gMap._getCenter(_locations);
+                let center = gMap.mymap.userLocation;
+                console.log(center);
+                //gMap._showUser(center);
                 gMap._showDestination(_locations, center, false);
             }
         }
@@ -92,23 +94,39 @@
             navigator.geolocation.getCurrentPosition( 
                 gMap._geolocationSuccess,
                 gMap._geolocationFailure,
-                { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 }  //опции геолокации
+                { enableHighAccuracy: true, timeout: 60000, maximumAge: 0 }  //опции геолокации
             );
         } else {
             console.log("Геолокация не поддерживается вашим устройством");
         }
     },
 
+    //_getLocation: function () {
+    //    return new Promise((resolve, reject) => {
+    //        if (navigator.geolocation) {
+    //            navigator.geolocation.getCurrentPosition(
+    //                (position, resolve) => gMap._geolocationSuccess(position, resolve),
+    //                (position, reject) => gMap._geolocationFailure(position, reject),
+    //                { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 }  //опции геолокации
+    //            );
+    //        } else {
+    //            console.log("Геолокация не поддерживается вашим устройством");
+    //            reject();
+    //        }
+    //    });
+    //},
+
     _geolocationSuccess: function (position)
     {
         // Преобразуем местоположение в объект LatLng
         let location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         // Отображаем эту точку на карте
-        if (position.coords.accuracy < 5000) {
+        if (position.coords.accuracy < 30000) {
             gMap._showUser(location);
             gMap.mymap.bounds.extend(location);
-            console.log(position.coords.accuracy);
+            //console.log(position.coords.accuracy);
             gMap.mymap.userLocation = location;
+            return location;
         }
         else {
             console.log(position.coords.accuracy);
@@ -120,6 +138,29 @@
         console.log(positionError);
         alert('Позиция не определена');
     },
+
+    //_geolocationSuccess: function (position, resolve) {
+    //    // Преобразуем местоположение в объект LatLng
+    //    let location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    //    // Отображаем эту точку на карте
+    //    if (position.coords.accuracy < 5000) {
+    //        gMap._showUser(location);
+    //        gMap.mymap.bounds.extend(location);
+    //        console.log(position.coords.accuracy);
+    //        gMap.mymap.userLocation = location;
+    //    }
+    //    else {
+    //        console.log(position.coords.accuracy);
+    //        alert('Координаты определены с погрешностью.');
+    //    }
+    //    //resolve();
+    //},
+
+    //_geolocationFailure: function (positionError, reject) {
+    //    console.log(positionError);
+    //    alert('Позиция не определена');
+    //    reject();
+    //},
 
     _showUser: function (location)
     {
@@ -156,10 +197,15 @@
 
     _showDestination: function (locations, userLocation, showAll = false)
     {
-        //if (!userLocation) userLocation = gMap._getCenter(locations);
+        console.log('_showDestination');
+        //console.log(locations);
+        //console.log(userLocation);
+        if (!userLocation) userLocation = gMap._getCenter(locations);
         for (let i = 0; i < locations.length; i++)
         {
-            if (showAll || gMap._isInDestination(locations[i], locations[i].radius, userLocation))
+            //let asd = gMap._isInDestination(locations[i], locations[i].radius, userLocation);
+            //console.log(asd);
+            if (gMap._isInDestination(locations[i], locations[i].radius, userLocation) || showAll)
             {
                 let circle = new google.maps.Circle({ radius: locations[i].radius, center: locations[i], map: gMap.mymap.map });
             }
@@ -168,12 +214,24 @@
 
     _isInDestination: function (center, radius, point)
     {
+        console.log('_isInDestination');
+        console.log(center);
+        console.log(radius);
+        console.log(point);
         let isInside = false;
         //if (gMap._isPoint(center) || gMap._isPoint(point)) return isInside;
         let _center = new google.maps.LatLng(center.lat, center.lng);
-        let _point = new google.maps.LatLng(point.lat, point.lng);
+        let _point = null;
+        if (point instanceof google.maps.LatLng) {
+            _point = point;
+        }
+        else {
+            _point = new google.maps.LatLng(point.lat, point.lng);
+        }
         let distance = google.maps.geometry.spherical.computeDistanceBetween(_center, _point);
+        console.log(distance);
         if (distance < radius) isInside = true;
+        console.log(isInside);
         return isInside;
     },
 
