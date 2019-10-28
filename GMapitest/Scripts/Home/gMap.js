@@ -2,7 +2,8 @@
     mymap: {
         map: null,
         bounds: null,
-        userLocation: null,
+        userLocation: false,
+        locations: null
     },
     options:
     {
@@ -24,11 +25,17 @@
     },
 
     initMap: function (container, tagId) {
-        gMap.mymap.geokodingFail = false; 
+        gMap.mymap.userLocation = false; 
         console.log('initMap');
         //парсим контейнер
         let _container = JSON.parse(container);
         let _locations = _container.locations;
+        //TODO - поднимаем флаг для проверки радиуса доступа 
+        if (_container.options.showLocationInRange)
+        {
+            gMap.mymap.userLocation = true;
+            gMap.mymap.locations = _locations;
+        }
         //создаем карту
         gMap.mymap.map = new google.maps.Map(document.getElementById(tagId));
 
@@ -36,14 +43,6 @@
         {
             gMap._getLocation();
             gMap._renderMap(_locations);
-            if (_container.options.showLocationInRange) {
-                //TODO - костыль - задержка для корректного определения положения пользователя, переделать на коллбэк
-                let center = gMap._getCenter(_locations);
-                setTimeout(() => {
-                    center = gMap.mymap.userLocation;
-                    gMap._showDestination(_locations, center, false);
-                }, 1000);
-            }
         }
         else
         {
@@ -95,7 +94,8 @@
                 gMap._geolocationFailure,
                 { enableHighAccuracy: true, timeout: 60000, maximumAge: 0 }  //опции геолокации
             );
-        } else {
+        }
+        else {
             console.log("Геолокация не поддерживается вашим устройством");
         }
     },
@@ -109,10 +109,14 @@
         if (position.coords.accuracy < 30000)
         {
             //console.log('_geolocationSuccess');
+            //console.log(gMap.mymap.locations);
             gMap._showUser(location);
             gMap.mymap.bounds.extend(location);
-            gMap.mymap.userLocation = location;
-            return location;
+            //TODO - обработка флага для отображения зоны доступа
+            if (gMap.mymap.userLocation)
+            {
+                gMap._showDestination(gMap.mymap.locations, location, false);
+            }
         }
         else {
             console.log(position.coords.accuracy);
@@ -124,8 +128,6 @@
         console.log(positionError);
         alert('Позиция не определена');
     },
-
-  
 
     _showUser: function (location)
     {
@@ -161,9 +163,9 @@
 
     _showDestination: function (locations, userLocation, showAll = false)
     {
-        console.log('_showDestination');
+        //console.log('_showDestination');
         //console.log(locations);
-        console.log(userLocation);
+        //console.log(userLocation);
         if (!userLocation) userLocation = gMap._getCenter(locations);
         for (let i = 0; i < locations.length; i++)
         {
