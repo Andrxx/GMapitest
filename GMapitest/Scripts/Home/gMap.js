@@ -37,7 +37,7 @@
             gMap._getLocation();
             gMap._renderMap(_locations);
             if (_container.options.showLocationInRange) {
-
+                //TODO - костыль - задержка для корректного определения положения пользователя, переделать на коллбэк
                 let center = gMap._getCenter(_locations);
                 setTimeout(() => {
                     center = gMap.mymap.userLocation;
