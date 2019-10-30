@@ -163,15 +163,30 @@
 
     _showDestination: function (locations, userLocation, showAll = false)
     {
-        //console.log('_showDestination');
-        //console.log(locations);
+        console.log('_showDestination');
+        console.log(locations);
         //console.log(userLocation);
         if (!userLocation) userLocation = gMap._getCenter(locations);
         for (let i = 0; i < locations.length; i++)
         {
             if (gMap._isInDestination(locations[i], locations[i].radius, userLocation) || showAll)
             {
-                let circle = new google.maps.Circle({ radius: locations[i].radius, center: locations[i], map: gMap.mymap.map });
+                try {
+                    let circle = new google.maps.Circle({
+                        radius: locations[i].radius,
+                        center: locations[i],
+                        map: gMap.mymap.map,
+                        fillColor: locations[i].cssStyle.circleOptions.fillColor,
+                        fillOpacity: locations[i].cssStyle.circleOptions.fillOpacity,
+                        strokeColor: locations[i].cssStyle.circleOptions.strokeColor,
+                        strokeOpacity: locations[i].cssStyle.circleOptions.strokeOpacity,
+                        strokeWeight: locations[i].cssStyle.circleOptions.strokeWeight,
+                    });
+                }
+                catch(error){
+                    console.log(error);
+                }
+                //let circle = new google.maps.Circle({ radius: locations[i].radius, center: locations[i], map: gMap.mymap.map });
             }
         }
     },

@@ -17,7 +17,7 @@
 
 <div class="row">
     <div class="col-md-8 map" id="map">
-
+        
     </div>
 </div>
 
@@ -39,19 +39,28 @@
             options:
             {
                 userLocation: true,
-                showAllRegions: false,
+                showAllRegions: true,
                 showLocationInRange: true,
             },
-
             locations:
                 [
                     {
                         lat: 43.5868685,
                         lng: 39.7299474,
-                        description: 'первая точка',
+                        description: '<p style="font-weight:bolder; font-style:italic;">Стилизованый текст из вызывающего метода</p> <p style="color:brown;" > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>',
                         img: 'some url',
                         radius: 500,
-                        cssClass: 'abc',
+                        cssStyle:
+                        {
+                            circleOptions:
+                            {
+                                fillColor: '#a0bfeb',
+                                fillOpacity: 0.2,
+                                strokeColor: '#000000',
+                                strokeOpacity: 1,
+                                strokeWeight: 1
+                            }
+                        },
                     },
                     {
                         lat: 43.6085269,
@@ -59,7 +68,17 @@
                         description: 'вторая точка',
                         img: 'some url',
                         radius: 1000,
-                        cssClass: 'abc',
+                        cssStyle:
+                        {
+                            circleOptions:
+                            {
+                                fillColor: '#a0bfeb',
+                                fillOpacity: 0.2,
+                                strokeColor: '#000000',
+                                strokeOpacity: 1,
+                                strokeWeight: 1
+                            }
+                        },
                     },
                     {
                         lat: 43.6191221,
@@ -67,7 +86,17 @@
                         description: 'третья точка',
                         img: 'some url',
                         radius: 500,
-                        cssClass: 'abc',
+                        cssStyle:
+                        {
+                            circleOptions:
+                            {
+                                fillColor: '#a0bfeb',
+                                fillOpacity: 0.2,
+                                strokeColor: '#000000',
+                                strokeOpacity: 1,
+                                strokeWeight: 1
+                            }
+                        },
                     },
                     {
                         lat: 43.593971,
@@ -75,7 +104,17 @@
                         description: 'четвертая точка',
                         img: 'some url',
                         radius: 500,
-                        cssClass: 'abc',
+                        cssStyle:
+                        {
+                            circleOptions:
+                            {
+                                fillColor: '#a0bfeb',
+                                fillOpacity: 0.2,
+                                strokeColor: '#000000',
+                                strokeOpacity: 1,
+                                strokeWeight: 1
+                            }
+                        },
                     },
                     {
                         lat: 43.660057,
@@ -83,7 +122,17 @@
                         description: 'пятая точка',
                         img: 'some url',
                         radius: 700,
-                        cssClass: 'abc',
+                        cssStyle:
+                        {
+                            circleOptions:
+                            {
+                                fillColor: '#a0bfeb',
+                                fillOpacity: 0.2,
+                                strokeColor: '#000000',
+                                strokeOpacity: 1,
+                                strokeWeight: 1
+                            }
+                        },
                     },
                 ]
         };
@@ -107,14 +156,24 @@
             },
 
             locations:
-            [
+                [
                     {
                         lat: 43.5868685,
                         lng: 39.7299474,
-                        description: 'первая точка',
+                        description: '<p style="font-weight:bolder; font-style:italic;">Стилизованый текст из вызывающего метода</p> <p style="color:brown;" > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>',
                         img: 'some url',
                         radius: 500,
-                        cssClass: 'abc',
+                        cssStyle:
+                        {
+                            circleOptions:
+                            {
+                                fillColor: '#a0bfeb',
+                                fillOpacity: 0.2,
+                                strokeColor: '#000000',
+                                strokeOpacity: 1,
+                                strokeWeight: 1
+                            }
+                        },
                     },
                     {
                         lat: 43.6085269,
@@ -122,7 +181,17 @@
                         description: 'вторая точка',
                         img: 'some url',
                         radius: 1000,
-                        cssClass: 'abc',
+                        cssStyle:
+                        {
+                            circleOptions:
+                            {
+                                fillColor: '#a0bfeb',
+                                fillOpacity: 0.2,
+                                strokeColor: '#000000',
+                                strokeOpacity: 1,
+                                strokeWeight: 1
+                            }
+                        },
                     },
                     {
                         lat: 43.6191221,
@@ -130,7 +199,17 @@
                         description: 'третья точка',
                         img: 'some url',
                         radius: 500,
-                        cssClass: 'abc',
+                        cssStyle:
+                        {
+                            circleOptions:
+                            {
+                                fillColor: '#a0bfeb',
+                                fillOpacity: 0.2,
+                                strokeColor: '#000000',
+                                strokeOpacity: 1,
+                                strokeWeight: 1
+                            }
+                        },
                     },
                     {
                         lat: 43.593971,
@@ -138,17 +217,37 @@
                         description: 'четвертая точка',
                         img: 'some url',
                         radius: 500,
-                        cssClass: 'abc',
+                        cssStyle:
+                        {
+                            circleOptions:
+                            {
+                                fillColor: '#a0bfeb',
+                                fillOpacity: 0.2,
+                                strokeColor: '#000000',
+                                strokeOpacity: 1,
+                                strokeWeight: 1
+                            }
+                        },
                     },
                     {
                         lat: 43.660057,
                         lng: 39.660181,
                         description: 'пятая точка',
                         img: 'some url',
-                        radius: 500,
-                        cssClass: 'abc',
+                        radius: 700,
+                        cssStyle:
+                        {
+                            circleOptions:
+                            {
+                                fillColor: '#a0bfeb',
+                                fillOpacity: 0.2,
+                                strokeColor: '#000000',
+                                strokeOpacity: 1,
+                                strokeWeight: 1
+                            }
+                        },
                     },
-            ]
+                ]
         };
 
         let _container = JSON.stringify(container);
