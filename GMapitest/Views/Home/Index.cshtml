@@ -32,14 +32,19 @@
 
 <script src="~/Scripts/Home/gMap.js"></script>
 
+
 <script>
     $('#gmtest').click(function () {
-        let container =
+        let cont = {
+            tagID: 'map',
+            guid: '1',
+        };
+        let elements =
         {
             options:
             {
                 userLocation: true,
-                showAllRegions: true,
+                showAllRegions: false,
                 showLocationInRange: true,
             },
             locations:
@@ -137,24 +142,26 @@
                 ]
         };
 
-        let _container = JSON.stringify(container);
         let m = gMap;
-        m.init();
-        m.initMap(_container, 'map');
+        //m.init();
+        m.initMap(cont, elements);
     });
 </script>
 
 <script>
     $('#gmtest1').click(function () {
-        let container =
+        let cont = {
+            tagID: 'map1',
+            guid: '3',
+        };
+        let elements =
         {
             options:
             {
-                userLocation: true,
+                userLocation: false,
                 showAllRegions: true,
                 showLocationInRange: true,
             },
-
             locations:
                 [
                     {
@@ -250,10 +257,9 @@
                 ]
         };
 
-        let _container = JSON.stringify(container);
-        let gm = gMap;
-        gm.init();
-        gm.initMap(_container, 'map1');
+        let m = gMap;
+        //m.init();
+        m.initMap(cont, elements);
     });
 </script>
 

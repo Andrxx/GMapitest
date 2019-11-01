@@ -1,45 +1,44 @@
 ﻿let gMap = {
     mymap: {
-        map: null,
-        bounds: null,
-        userLocation: false,
-        locations: null
-    },
-    options:
-    {
-        googleKey: '',
-        tagIg: 'map'
+        //map: null,
+        //bounds: null,
+        //userLocation: false,
+        //locations: null
     },
 
-    init: function (items, options) {
-        if (gMap.runOnce) {
-            return;
+    initMap: function (cont, elements) {
+        console.log('initMap');
+        console.log(cont.guid);
+        //инициализация guid
+        if (gMap.mymap[cont.guid] === undefined) {
+            gMap.mymap[cont.guid] = {
+                map: null,
+                bounds: null,
+                userLocation: false,
+                locations: null,
+            };
+            gMap.guid = cont.guid;
+            console.log(gMap.guid + 'set in status');
         }
         else
         {
-            gMap.runOnce = true;
-            gMap.options = $.extend(gMap.options, options);
-            //gMap.mymap.map = new google.maps.Map(document.getElementById(gMap.options.tagIg));
-            gMap.mymap.bounds = new google.maps.LatLngBounds(); //объявление границ карты
+            if (gMap.guid !== cont.guid) gMap.guid = cont.guid;
+            console.log(gMap.guid + 'reset in status');
         }
-    },
-
-    initMap: function (container, tagId) {
-        gMap.mymap.userLocation = false; 
-        console.log('initMap');
-        //парсим контейнер
-        let _container = JSON.parse(container);
-        let _locations = _container.locations;
+        //gMap.mymap.userLocation = false; 
+        gMap.mymap[cont.guid].bounds = new google.maps.LatLngBounds(); //объявление границ карты
+        //console.log(elements);
+        let _locations = elements.locations;
         //TODO - поднимаем флаг для проверки радиуса доступа 
-        if (_container.options.showLocationInRange)
+        if (elements.options.showLocationInRange)
         {
-            gMap.mymap.userLocation = true;
-            gMap.mymap.locations = _locations;
+            gMap.mymap[cont.guid].userLocation = true;
+            gMap.mymap[cont.guid].locations = _locations;
         }
         //создаем карту
-        gMap.mymap.map = new google.maps.Map(document.getElementById(tagId));
+        gMap.mymap[cont.guid].map = new google.maps.Map(document.getElementById(cont.tagID));
 
-        if (_container.options.userLocation)
+        if (elements.options.userLocation)
         {
             gMap._getLocation();
             gMap._renderMap(_locations);
@@ -49,38 +48,41 @@
             gMap._renderMap(_locations);
         }
         //отображаем все радиусы доступа
-        if (_container.options.showAllRegions)
+        if (elements.options.showAllRegions)
         {
             gMap._showDestination(_locations, null, true);
         }
     },
 
-    _renderMap: function (_locations) {
+    _renderMap: function (locations) {
+        console.log('rendertMap');
+        let guid = gMap._getGuid();
+        console.log(guid);
         // Установка  маркеров
-        for (let i = 0; i < _locations.length; i++) {
+        for (let i = 0; i < locations.length; i++) {
             //console.log(locations[i]);
-            if (gMap._isPoint(_locations[i])) {
-                let location = new google.maps.LatLng(_locations[i].lat, _locations[i].lng);
+            if (gMap._isPoint(locations[i])) {
+                let location = new google.maps.LatLng(locations[i].lat, locations[i].lng);
                 let infowindow = new google.maps.InfoWindow(
                     {
-                        content: _locations[i].description,
+                        content: locations[i].description,
                     });
                 let marker = new google.maps.Marker(
                     {
                         position: location,
-                        map: gMap.mymap.map,
-                        title: _locations[i].description
+                        map: gMap.mymap[guid].map,
+                        title: locations[i].description
                     });
                 marker.addListener('click', function () {
-                    infowindow.open(gMap.mymap.map, marker);
+                    infowindow.open(gMap.mymap[guid].map, marker);
                 });
-                gMap.mymap.bounds.extend(location);
+                gMap.mymap[guid].bounds.extend(location);
             }
             else {
                 //alert('error'); //записать в лог
                 continue;
             }
-            gMap.mymap.map.fitBounds(gMap.mymap.bounds);
+            gMap.mymap[guid].map.fitBounds(gMap.mymap[guid].bounds);
         }
     },
 
@@ -108,14 +110,16 @@
         // Отображаем эту точку на карте
         if (position.coords.accuracy < 30000)
         {
-            //console.log('_geolocationSuccess');
+            console.log('_geolocationSuccess');
             //console.log(gMap.mymap.locations);
+            let guid = gMap._getGuid();
+            console.log(guid);
             gMap._showUser(location);
-            gMap.mymap.bounds.extend(location);
+            gMap.mymap[guid].bounds.extend(location);
             //TODO - обработка флага для отображения зоны доступа
-            if (gMap.mymap.userLocation)
+            if (gMap.mymap[guid].userLocation)
             {
-                gMap._showDestination(gMap.mymap.locations, location, false);
+                gMap._showDestination(gMap.mymap[guid].locations, location, false);
             }
         }
         else {
@@ -131,7 +135,8 @@
 
     _showUser: function (location)
     {
-        gMap.mymap.userLocation = location;
+        let guid = gMap._getGuid();
+        gMap.mymap[guid].userLocation = location;
         let image = {
             url: '/LocLogo.png',
             size: new google.maps.Size(40, 40),
@@ -140,11 +145,11 @@
         let marker = new google.maps.Marker(
             {
                 position: location,
-                map: gMap.mymap.map,
+                map: gMap.mymap[guid].map,
                 title: 'Вы здесь',
                 icon: image,
             });
-        gMap.mymap.bounds.extend(location);
+        gMap.mymap[guid].bounds.extend(location);
     },
 
     //проверка корректности позиции
@@ -164,7 +169,9 @@
     _showDestination: function (locations, userLocation, showAll = false)
     {
         console.log('_showDestination');
-        console.log(locations);
+        //console.log(locations);
+        let guid = gMap._getGuid();
+        console.log(guid);
         //console.log(userLocation);
         if (!userLocation) userLocation = gMap._getCenter(locations);
         for (let i = 0; i < locations.length; i++)
@@ -175,7 +182,7 @@
                     let circle = new google.maps.Circle({
                         radius: locations[i].radius,
                         center: locations[i],
-                        map: gMap.mymap.map,
+                        map: gMap.mymap[guid].map,
                         fillColor: locations[i].cssStyle.circleOptions.fillColor,
                         fillOpacity: locations[i].cssStyle.circleOptions.fillOpacity,
                         strokeColor: locations[i].cssStyle.circleOptions.strokeColor,
@@ -226,4 +233,10 @@
         return centerLocation;
     },
 
+    _getGuid: function ()
+    {
+        console.log('_getGuid');
+        console.log(gMap.guid);
+        if (gMap.guid !== undefined) return gMap.guid;
+    },
 };
