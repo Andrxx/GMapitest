@@ -14,6 +14,7 @@ as.map = {
     initCallbacks: function () {
 
     },
+
     initMap: function (cont, options) {
         var mapOptions = as.map._getMapOptions(cont, options);
         console.log('initMap');
@@ -25,13 +26,13 @@ as.map = {
         if (mapOptions.options.showUserLocation) {
             as.map._getLocation(mapOptions);
         }
-
         as.map._renderMap(mapOptions);
         //отображаем все радиусы доступа
         if (mapOptions.options.showAllRegions) {
             as.map._showDestination(mapOptions, null, true);
         }
     },
+
     _getMapOptions: function (cont, options) {
         console.log('_getMapOptions');
         //console.log(mapOptions);
@@ -59,7 +60,6 @@ as.map = {
             {
                 content: ""
             });
-
         for (var i = 0; i < mapOptions.locations.length; i++) {
             //console.log(locations[i]);
             var loc = mapOptions.locations[i];
@@ -73,7 +73,6 @@ as.map = {
                         animation: google.maps.Animation.DROP,
                         data: loc.description
                     });
-
 
                 marker.addListener('click', function (e) {
                     info.close(); // Close previously opened infowindow
@@ -103,9 +102,7 @@ as.map = {
                         console.log('_geolocationSuccess');
                         as.map._showUser(mapOptions, location);
                         mapOptions.bounds.extend(location);
-                        //TODO - обработка флага для отображения зоны доступа
                         if (mapOptions.options.showUserLocation) {
-                            //console.log("aa", mapOptions.options, location);
                             as.map._showDestination(mapOptions, location, false);
                         }
                     }
@@ -234,49 +231,88 @@ as.map = {
         return res;
     },
 
-    getPlace: function (adress, gKey)
+    getPlace: function (cont)
     {
-        var request = "https://maps.googleapis.com/maps/api/geocode/json?address=" + adress + "&key=" + gKey;
-        $.ajax({
-            url: request,
-            type: 'GET',
-            success: function (data) {
-                //console.log(data);
-                if (data.status === "OK")
-                {
-                    //console.log(data.results);
-                    var locations = [];
-                    for (var i = 0; i < data.results.length; i++)
-                    { 
-                        //var location = data.results[i];
-                        var location = new google.maps.LatLng(data.results[i].geometry.location.lat, data.results[i].geometry.location.lng);
-                        console.log(data.results[i].formatted_address);
+        var request;
+        if (!cont.reverseGeocoding) {
+            request = "https://maps.googleapis.com/maps/api/geocode/" + cont.outputFormat + "?address=" + cont.adress;
+            request += "&key=" + cont.googleKey;
+            console.log(request);
+            $.ajax({
+                url: request,
+                type: 'GET',
+                success: function (data) {
+                    console.log(data);
+                    if (data.status === "OK") {
+                        var locations = [];
+                        for (var i = 0; i < data.results.length; i++) {
+                            var location = new google.maps.LatLng(data.results[i].geometry.location.lat, data.results[i].geometry.location.lng);
+                            console.log(data.results[i].formatted_address);
+                            $('#places').append(
+                                '<option >' + data.results[i].formatted_address + '</option>'
+                            );
+                            locations.push(location);
+                        }
+                        return locations;
+                    }
+                    //TODO - разобрать обработку ошибок запроса
+                    else {
+                        switch (data.status) {
+                            case 'ZERO_RESULTS':
+                                return null;
+                            case 'OVER_DAILY_LIMIT ':
+                                return null;
+                            case 'OVER_QUERY_LIMIT ':
+                                return null;
+                            case 'REQUEST_DENIED':
+                                return null;
+                            case 'INVALID_REQUEST':
+                                return null;
+                            case 'UNKNOWN_ERROR':
+                                return null;
+                        }
+                    }
+                }
+            });
+        }
+        //обратное геокодирование
+        else {
+            request = "https://maps.googleapis.com/maps/api/geocode/" + cont.outputFormat + "?latlng=" + cont.lat + "," + cont.lng + "&key=" + cont.googleKey;
+            console.log(request);
+            $.ajax({
+                url: request,
+                type: 'GET',
+                success: function (data) {
+                    console.log(data);
+                    if (data.status === "OK") {
+                        var locations = data;
+                        console.log(data);
                         $('#places').append(
-                            '<option >' + data.results[i].formatted_address + '</option>'
+                            '<option >' + data.results[0].formatted_address + '</option>'
                         );
-                        locations.push(location);
+                        return locations;
                     }
-                    return locations;
-                }
-                //TODO - разобрать обработку ошибок запроса
-                else {
-                    switch (data.status) {
-                        case 'ZERO_RESULTS':
-                            return null;
-                        case 'OVER_DAILY_LIMIT ':
-                            return null;
-                        case 'OVER_QUERY_LIMIT ':
-                            return null;
-                        case 'REQUEST_DENIED':
-                            return null;
-                        case 'INVALID_REQUEST':
-                            return null;
-                        case 'UNKNOWN_ERROR':
-                            return null;
+                    //TODO - разобрать обработку ошибок запроса
+                    else {
+                        switch (data.status) {
+                            case 'ZERO_RESULTS':
+                                return null;
+                            case 'OVER_DAILY_LIMIT ':
+                                return null;
+                            case 'OVER_QUERY_LIMIT ':
+                                return null;
+                            case 'REQUEST_DENIED':
+                                return null;
+                            case 'INVALID_REQUEST':
+                                return null;
+                            case 'UNKNOWN_ERROR':
+                                return null;
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
+      
     }
 };
 

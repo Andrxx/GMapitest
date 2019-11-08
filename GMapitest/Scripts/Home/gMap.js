@@ -110,7 +110,7 @@
         // Отображаем эту точку на карте
         if (position.coords.accuracy < 30000)
         {
-            console.log('_geolocationSuccess');
+            //console.log('_geolocationSuccess');
             //console.log(gMap.mymap.locations);
             let guid = gMap._getGuid();
             console.log(guid);

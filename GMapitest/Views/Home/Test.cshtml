@@ -199,7 +199,17 @@
 
 <script>
     $('#get').click(function () {
-        as.map.getPlace('сбербанк', 'AIzaSyAHZIqG64ECD89gO7f4e_LbXJwkpnl4Gq0');
+        var cont = {
+            outputFormat: 'json',                                   //тип получаемого запроса - json или xml
+            adress: 'toledo',                                       //строка с поиском
+            bounds: '',                                             //ограниченеи региона поиска
+            googleKey: 'AIzaSyAHZIqG64ECD89gO7f4e_LbXJwkpnl4Gq0',   //ключ API Google
+            reverseGeocoding: true,
+            lat: 43.5868685,
+            lng: 39.7299474,
+        };
+
+        as.map.getPlace(cont);
     });
 
 </script>
