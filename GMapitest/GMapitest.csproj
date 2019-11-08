@@ -146,6 +146,12 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\Home\as.js" />
+    <Content Include="Scripts\Home\as.makeup.js" />
+    <Content Include="Scripts\Home\as.map.js" />
+    <Content Include="Scripts\Home\as.resources.js" />
+    <Content Include="Scripts\Home\as.sys.js" />
+    <Content Include="Scripts\Home\as.tools.js" />
     <Content Include="Scripts\Home\GMap tutorial.txt" />
     <Content Include="Scripts\Home\gMap.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -172,6 +178,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Test.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,216 @@
+﻿
+@{
+
+    ViewBag.Title = "";
+    ViewBag.Description = "";
+
+}
+@Scripts.Render("~/bundles/jquery")
+<a href="#" id="gmtest">Click!!!!!</a>
+<div class="as-map1" style="width:100%; min-height: 400px;">
+
+</div>
+<hr />
+@*<a href="#" id="gmtest2">Click!!!!!</a>
+<div id="map2" style="width:100%; min-height: 400px;">
+
+</div>*@
+
+<button id="get">gecoding</button> <br />
+
+<select size="1" class="" id="places">
+    <option> места</option>
+</select>
+
+@section js{
+    @{
+        /*<script async defer
+              src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHZIqG64ECD89gO7f4e_LbXJwkpnl4Gq0&libraries=geometry">
+      </script>
+      */
+    }
+
+    <script>
+       $(function () {
+           $('#gmtest').click(function ()
+           {
+                var options =
+                {
+                    options:
+                    {
+                        showUserLocation: true,
+                        userImageUrl: '/LocLogo.png',
+                        showAllRegions: true,
+                        showLocationInRange: true,
+                    },
+                    locations:
+                        [
+                            {
+                                lat: 43.5868685,
+                                lng: 39.7299474,
+                                description: '<p style="font-weight:bolder; font-style:italic;">Стилизованый текст из вызывающего метода</p> <p style="color:brown;" > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>',
+                                tooltip: "это подсказка",
+                                radius: 500,
+                                cssStyle:
+                                {
+                                    circleOptions:
+                                    {
+                                        fillColor: '#a0bfeb',
+                                        fillOpacity: 0.2,
+                                        strokeColor: '#000000',
+                                        strokeOpacity: 1,
+                                        strokeWeight: 1
+                                    }
+                                },
+                            },
+                            {
+                                lat: 43.6085269,
+                                lng: 39.7313797,
+                                description: 'вторая точка',
+                                radius: 1000,
+                                cssStyle:
+                                {
+                                    circleOptions:
+                                    {
+                                        fillColor: '#a0bfeb',
+                                        fillOpacity: 0.2,
+                                        strokeColor: '#000000',
+                                        strokeOpacity: 1,
+                                        strokeWeight: 1
+                                    }
+                                },
+                            },
+                            {
+                                lat: 43.6191221,
+                                lng: 39.7218364,
+                                description: 'третья точка',
+                                tooltip: 'some url',
+                                radius: 500,
+                                cssStyle:
+                                {
+                                    circleOptions:
+                                    {
+                                        fillColor: '#a0bfeb',
+                                        fillOpacity: 0.2,
+                                        strokeColor: '#000000',
+                                        strokeOpacity: 1,
+                                        strokeWeight: 1
+                                    }
+                                },
+                            },
+                            {
+                                lat: 43.593971,
+                                lng: 39.736433,
+                                description: 'четвертая точка',
+                                radius: 500,
+                                cssStyle:
+                                {
+                                    circleOptions:
+                                    {
+                                        fillColor: '#a0bfeb',
+                                        fillOpacity: 0.2,
+                                        strokeColor: '#000000',
+                                        strokeOpacity: 1,
+                                        strokeWeight: 1
+                                    }
+                                },
+                            },
+                            {
+                                lat: 43.660057,
+                                lng: 39.660181,
+                                description: '<p style="font-weight:bolder; font-style:italic;">Стилизованый текст из вызывающего метода</p> <p style="color:brown;" > Пятая точка!!!</p>',
+                                tooltip: "точка 5",
+                                radius: 900,
+                                cssStyle:
+                                {
+                                    circleOptions:
+                                    {
+                                        fillColor: '#a0bfeb',
+                                        fillOpacity: 0.8,
+                                        strokeColor: '#ff0000',
+                                        strokeOpacity: 0.3,
+                                        strokeWeight: 1
+                                    }
+                                },
+                            },
+                        ]
+                };
+                as.map.initMap($('.as-map1'), options);
+            });
+
+            $('#gmtest2').click(function () {
+                var opt2 =
+                {
+                    options:
+                    {
+                        showUserLocation: true,
+                        userImageUrl: '/LocLogo.png',
+
+                        showAllRegions: false,
+                        showLocationInRange: true,
+                    },
+                    locations:
+                        [
+
+                            {
+                                lat: 43.593971,
+                                lng: 39.736433,
+                                description: 'четвертая точка',
+                                img: 'some url',
+                                radius: 500,
+                                cssStyle:
+                                {
+                                    circleOptions:
+                                    {
+                                        fillColor: '#a0bfeb',
+                                        fillOpacity: 0.2,
+                                        strokeColor: '#000000',
+                                        strokeOpacity: 1,
+                                        strokeWeight: 1
+                                    }
+                                },
+                            },
+                            {
+                                lat: 43.660057,
+                                lng: 39.660181,
+                                description: 'пятая точка',
+                                img: 'some url',
+                                radius: 700,
+                                cssStyle:
+                                {
+                                    circleOptions:
+                                    {
+                                        fillColor: '#a0bfeb',
+                                        fillOpacity: 0.2,
+                                        strokeColor: '#000000',
+                                        strokeOpacity: 1,
+                                        strokeWeight: 1
+                                    }
+                                },
+                            },
+                        ]
+                };
+                as.map.initMap($('#map2'), opt2);
+            });
+        });
+    </script>
+}
+
+
+<script>
+    $('#get').click(function () {
+        as.map.getPlace('сбербанк', 'AIzaSyAHZIqG64ECD89gO7f4e_LbXJwkpnl4Gq0');
+    });
+
+</script>
+
+@section css{
+}
+@section leftCol{
+
+}
+<script src="~/Scripts/Home/as.map.js"></script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHZIqG64ECD89gO7f4e_LbXJwkpnl4Gq0&libraries=geometry">
+</script>
+

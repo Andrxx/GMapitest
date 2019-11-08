@@ -28,3 +28,7 @@ textarea {
     height: 400px;
     background-color: grey;
 }
+
+#places .option {
+    color: black;
+}
