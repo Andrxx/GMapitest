@@ -7,28 +7,31 @@
     <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
     <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
 </div>
-<div class="row">
+@*<div class="row">
     <div class="col-md-4">
         @*<img src="~/LocLogo.png"*@
-        <button class="redStyle" id="gmtest">Нажать</button> <br />
+        @*<button class="redStyle" id="gmtest">Нажать</button> <br />
     </div>
-</div>
+</div>*@
 
 
-<div class="row">
-    <div class="col-md-8 map" id="map">
-        
+@Html.ActionLink("Карты", "Test", "Home") <br />
+@Html.ActionLink("Геолокация", "GeolocationTest", "Home")<br />
+@Html.ActionLink("Автозаполнение", "AutocompliteTest", "Home")<br />
+@*<div class="row">
+        <div class="col-md-8 map" id="map">
+
+        </div>
     </div>
-</div>
 
-<button class="redStyle" id="gmtest1">Нажать</button> <br />
+    <button class="redStyle" id="gmtest1">Нажать</button> <br />
 
-<div class="row">
+    <div class="row">
 
-    <div class="col-md-8 map" id="map1">
+        <div class="col-md-8 map" id="map1">
 
-    </div>
-</div>
+        </div>
+    </div>*@
 
 <script src="~/Scripts/Home/gMap.js"></script>
 
@@ -263,6 +266,6 @@
     });
 </script>
 
-<script async defer
+@*<script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHZIqG64ECD89gO7f4e_LbXJwkpnl4Gq0&libraries=geometry">
-</script>
+</script>*@

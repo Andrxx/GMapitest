@@ -11,51 +11,10 @@
 
 </div>
 <hr />
-@*<a href="#" id="gmtest2">Click!!!!!</a>
-    <div id="map2" style="width:100%; min-height: 400px;">
-
-    </div>*@
-
-<button id="get">gecoding</button> <br />
-
-<select size="1" class="" id="places">
-    <option> места</option>
-</select>
-@*<br />
-<label>Адрес для поиска: </label><input id="address" style="width:600px;" type="text" />
-<br />
-<label>Широта (latitude): </label><input id="latitude" type="text" /><br />
-<label>Длогота (longitude): </label><input id="longitude" type="text" />*@
-
-
-
-<div id="locationField">
-    <input id="autocomplete"
-           placeholder="Enter your address"
-           @*onFocus="geolocate()"*@
-           type="text" />
-</div>
-
-
-
-
-
 
 
 @section js{
     @{
-
-        /*<script async defer
-              src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHZIqG64ECD89gO7f4e_LbXJwkpnl4Gq0&libraries=geometry&libraries=places">
-        </script>
-        */
-    }
-}
-<script src="~/Scripts/Home/as.map.js"></script>
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHZIqG64ECD89gO7f4e_LbXJwkpnl4Gq0&libraries=geometry,places">
-</script>
-
 <script>
     $(function () {
         $('#gmtest').click(function () {
@@ -219,39 +178,8 @@
         });
     });
 </script>
-
-<script>
-    $('#get').click(function () {
-        var cont = {
-            outputFormat: 'json',                                   //тип получаемого запроса - json или xml
-            adress: 'сочи',                                         //строка с поиском
-            googleKey: 'AIzaSyAHZIqG64ECD89gO7f4e_LbXJwkpnl4Gq0',   //ключ API Google
-            reverseGeocoding: false,
-            lat: 43.5868685,
-            lng: 39.7299474,
-        };
-        as.map.getPlace(cont);
-        //as.map.autoSearchPlace('sdfgh');
-    });
-
-
-    $(function ()
-    {
-        var cont = {
-            inputField: 'autocomplete',             //имя поля для ввода
-            //опции для настройки поиска
-            options: {
-                bounds: null,                       //границы поиска
-                componentRestrictions: null,        //ограничение по региону
-                fields: ['address_component'],      //ограничение выводимых данных, см google.maps.places.PlaceResult interface 
-                strictBounds: false,                //подтверждене ограничения поиска по заданным границам
-                types: ['geocode'],                 //The types of predictions to be returned. For a list of supported types, see the https://developers.google.com/places/supported_types#table3. 
-            },
-        };
-        as.map.autoSearchPlace(cont);
-    });
-</script>
-
+    }
+}
 
 @section css{
 }

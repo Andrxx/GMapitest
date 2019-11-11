@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "GeolocationTest";
+}
+
+<h2>GeolocationTest</h2>
+
+<button id="get">gecoding</button> <br />
+
+<select size="1" class="" id="places">
+    <option> места</option>
+</select>
+
+<script>
+    $('#get').click(function () {
+        var cont = {
+            outputFormat: 'json',                                   //тип получаемого запроса - json или xml
+            adress: 'сочи',                                         //строка с поиском
+            googleKey: 'AIzaSyAHZIqG64ECD89gO7f4e_LbXJwkpnl4Gq0',   //ключ API Google
+            reverseGeocoding: false,
+            lat: 43.5868685,
+            lng: 39.7299474,
+        };
+        as.map.getPlace(cont);
+    });
+</script>

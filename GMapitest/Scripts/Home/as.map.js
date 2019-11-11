@@ -321,6 +321,7 @@ as.map = {
         autocomplete.addListener('place_changed', function()
         {
             var place = autocomplete.getPlace();
+            alert(place.formatted_address);
             console.log(place);
         });
     },

@@ -33,5 +33,15 @@ namespace GMapitest.Controllers
         {
             return View();
         }
+
+        public ActionResult GeolocationTest()
+        {
+            return View();
+        }
+
+        public ActionResult AutocompliteTest()
+        {
+            return View();
+        }
     }
 }
