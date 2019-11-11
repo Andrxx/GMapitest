@@ -183,6 +183,7 @@ as.map = {
             }
         }
     },
+
     _isInDestination: function (center, radius, point) {
         //console.log('_isInDestination');
         //console.log(center);
@@ -283,10 +284,9 @@ as.map = {
                 url: request,
                 type: 'GET',
                 success: function (data) {
-                    console.log(data);
                     if (data.status === "OK") {
                         var locations = data;
-                        console.log(data);
+                        //console.log(data);
                         $('#places').append(
                             '<option >' + data.results[0].formatted_address + '</option>'
                         );
@@ -312,11 +312,22 @@ as.map = {
                 }
             });
         }
-      
-    }
+    },
+
+    autoSearchPlace: function(cont)
+    {
+        console.log(cont);
+        var autocomplete = new google.maps.places.Autocomplete(document.getElementById(cont.inputField), cont.options);
+        autocomplete.addListener('place_changed', function()
+        {
+            var place = autocomplete.getPlace();
+            console.log(place);
+        });
+    },
+
 };
 
 
-(function () {
+$(function () {
     as.map.init({});
 });
