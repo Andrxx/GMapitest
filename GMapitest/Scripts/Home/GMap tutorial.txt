@@ -1,22 +1,26 @@
 // gMap компонент
 // методы API 
 
-initMap(cont, elements) - инициализация карты, получение и парсинг контейнера с настройками и массива локаций, сохранение GUID, запуск методов 
+init(options) - инициализация компонента 
+
+initCallbacks() -коллбэки компонента
+
+initMap(cont, options) - инициализация карты, получение и парсинг контейнера с настройками и массива локаций, запуск методов 
 отрисовки карты в соответствии с настройками
 
 cont - передаем настройки для компонента
 		{
             tagID: string,			//имя тэга для отрисовки карты
-            guid: guid,				//guid для хранения состояния
 		}
-
-elements
+настройки отбражения и массив локаций
+options{
 //опции отображенния элементов на карте
  options:
             {
                 userLocation: boolean,              //показать локации пользователя
                 showAllRegions: boolean,			//показать все локации обслуживания всех точек
                 showLocationInRange: boolean		//показать локацию, в которую попадает пользователь
+				userImageUrl: '/LocLogo.png',		//картинка для маркера пользователя
             },
 			//массив локаций
 			locations:
@@ -40,141 +44,59 @@ elements
                         }
                     }
 				]
+
+}
+
+
+getPlace(cont) - метод для определения географических координат для заданного имени локации или получение имен и адресов из координат. Приниает контейнер с 
+настройками и именем локации/координатами Возвращает координаты или строку с именем
+
+	var cont = {
+       //   outputFormat: string,                                   //тип ответа на запрос - json или xml - пока не используется - определить целесообразность xml
+            adress: string,                                         //строка с поиском
+            googleKey: string,										//ключ API Google
+            reverseGeocoding: boolean,								//направление геокодирования - false - адрес в координаты, true - координаты в адрес
+            lat: double,											//широта
+            lng: double,											//долгота
+			}
+
+ autoSearchPlace(cont) - метод для поиска местоположения с автозаполнением. Принимает контенер с настройками, выводит в поле ввода выбранный
+ элемент из списка автопоиска
+	  var cont = {
+            inputField: string,             //имя поля для ввода
+            //опции для настройки поиска
+            options: {
+                bounds: object,                       //границы поиска, если не заданно, передать null
+                componentRestrictions: object,        //ограничение по региону, если не заданно, передать null
+                fields: [string],					//ограничение выводимых данных, см google.maps.places.PlaceResult interface
+                strictBounds: false,                //подтверждене ограничения поиска по заданным границам
+                types: [string],					//The types of predictions to be returned. For a list of supported types, see the https://developers.google.com/places/supported_types#table3.
+            },
+
 // внутренние методы
 
-_renderMap(locations) - получает массив объектов с координатами и описанием локации, создает карту и отображает локации из массива
+_getMapOptions(cont, options) - обработка или генерация GUID для хранения внутреннего состояния компонента, получает данные из метода initMap
 
-_getLocation() - получает местонахождение пользователя, вызов коллбэка при успехе/неудаче
+_renderMap(mapOptions) - получает массив объектов с координатами и описанием локаций из опций состояния, создает карту и отображает локации из массива
 
-_geolocationSuccess(position) -  при удачном определении пользователя - отрисовка маркера пользователя на карте
+_getLocation(mapOptions) - получает местонахождение пользователя, принимает опции состояния компонента, при успехе определения вызывает методы для
+отображения пользователя, при неудае логирование
 
-_geolocationFailure - внутренний метод при неудачном определении позиции пользователя
+_showUser(mapOptions, location) - отображаем местоположение пользователя на карте в точке с переданными координатами после геолокации  
 
-_showUser(location) - отображаем местоположение пользователя на карте в точке с переданными координатами после геолокации  
+_showDestination(mapOptions, userLocation, showAll) - отображает зоны обслуживания для переданных объектов, принимает опции состояния компонента, 
+положение пользователя, при поднятом флаге показывает все заны, при showAll = false показываает только зоны, в которые попал пользователь 
 
-_isInDestination(center, radius, point) - определяем находится ли точка в радиусе обслуживания локации, принимает локацию, радиус обслуживания, текущую точку, return true||false
+_isInDestination(center, radius, point) - определяем находится ли точка в радиусе обслуживания локации, принимает локацию, радиус обслуживания, 
+текущую точку, return true||false
 
 _getCenter(locations) - определение центра карты - географический центр массива локаций
 
-_isPoint(location) - проверка объекта на наличие координатат
+_isPoint(location) - проверка объекта на корректность
 
-_getGuid() - получае указатель на текущий элемент массива состояний
+guidGenerator() - генерация ключа
 
- Пример
- Вызов копонента
- <script>
- $('#gmtest').click(function () {
-        let cont = {
-            tagID: 'map',
-            guid: '1',
-        };
-        let elements =
-        {
-            options:
-            {
-                userLocation: true,
-                showAllRegions: false,
-                showLocationInRange: true,
-            },
-            locations:
-                [
-                    {
-                        lat: 43.5868685,
-                        lng: 39.7299474,
-                        description: '<p style="font-weight:bolder; font-style:italic;">Стилизованый текст из вызывающего метода</p> <p style="color:brown;" > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>',
-                        img: 'some url',
-                        radius: 500,
-                        cssStyle:
-                        {
-                            circleOptions:
-                            {
-                                fillColor: '#a0bfeb',
-                                fillOpacity: 0.2,
-                                strokeColor: '#000000',
-                                strokeOpacity: 1,
-                                strokeWeight: 1
-                            }
-                        },
-                    },
-                    {
-                        lat: 43.6085269,
-                        lng: 39.7313797,
-                        description: 'вторая точка',
-                        img: 'some url',
-                        radius: 1000,
-                        cssStyle:
-                        {
-                            circleOptions:
-                            {
-                                fillColor: '#a0bfeb',
-                                fillOpacity: 0.2,
-                                strokeColor: '#000000',
-                                strokeOpacity: 1,
-                                strokeWeight: 1
-                            }
-                        },
-                    },
-                    {
-                        lat: 43.6191221,
-                        lng: 39.7218364,
-                        description: 'третья точка',
-                        img: 'some url',
-                        radius: 500,
-                        cssStyle:
-                        {
-                            circleOptions:
-                            {
-                                fillColor: '#a0bfeb',
-                                fillOpacity: 0.2,
-                                strokeColor: '#000000',
-                                strokeOpacity: 1,
-                                strokeWeight: 1
-                            }
-                        },
-                    },
-                    {
-                        lat: 43.593971,
-                        lng: 39.736433,
-                        description: 'четвертая точка',
-                        img: 'some url',
-                        radius: 500,
-                        cssStyle:
-                        {
-                            circleOptions:
-                            {
-                                fillColor: '#a0bfeb',
-                                fillOpacity: 0.2,
-                                strokeColor: '#000000',
-                                strokeOpacity: 1,
-                                strokeWeight: 1
-                            }
-                        },
-                    },
-                    {
-                        lat: 43.660057,
-                        lng: 39.660181,
-                        description: 'пятая точка',
-                        img: 'some url',
-                        radius: 700,
-                        cssStyle:
-                        {
-                            circleOptions:
-                            {
-                                fillColor: '#a0bfeb',
-                                fillOpacity: 0.2,
-                                strokeColor: '#000000',
-                                strokeOpacity: 1,
-                                strokeWeight: 1
-                            }
-                        },
-                    },
-                ]
-        };
 
-        let m = gMap;
-        m.initMap(cont, elements);
-    });
-</script>
 
 
 

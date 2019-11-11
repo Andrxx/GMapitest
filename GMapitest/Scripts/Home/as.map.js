@@ -17,8 +17,8 @@ as.map = {
 
     initMap: function (cont, options) {
         var mapOptions = as.map._getMapOptions(cont, options);
-        console.log('initMap');
-        console.log(mapOptions);
+        //console.log('initMap');
+        //console.log(mapOptions);
         mapOptions.bounds = new google.maps.LatLngBounds(); //объявление границ карты
         //создаем карту
         mapOptions.map = new google.maps.Map(document.getElementById(mapOptions.g));
@@ -34,10 +34,10 @@ as.map = {
     },
 
     _getMapOptions: function (cont, options) {
-        console.log('_getMapOptions');
+        //console.log('_getMapOptions');
         //console.log(mapOptions);
         var g = cont.attr("id");
-        console.log(g);
+        //console.log(g);
         if (!g) {
             g = as.map.guidGenerator();
             cont.attr('id', g);
@@ -48,12 +48,14 @@ as.map = {
             showUserLocation: false,
             locations: null
         };
+        console.log(res);
         res.locations = options.locations;
         res.options = options.options;
         res.cont = cont;
         res.g = g;
         return res;
     },
+
     _renderMap: function (mapOptions) {
         // Установка  маркеров
         var info = new google.maps.InfoWindow(  //обязательно let - иначе не будет работать замыкание при клике
@@ -99,7 +101,7 @@ as.map = {
                     var location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                     // Отображаем эту точку на карте
                     if (position.coords.accuracy < 30000) {
-                        console.log('_geolocationSuccess');
+                        //console.log('_geolocationSuccess');
                         as.map._showUser(mapOptions, location);
                         mapOptions.bounds.extend(location);
                         if (mapOptions.options.showUserLocation) {
@@ -123,7 +125,6 @@ as.map = {
             console.log("Геолокация не поддерживается вашим устройством");
         }
     },
-
 
     _showUser: function (mapOptions, location) {
         mapOptions.userLocation = location;
@@ -179,7 +180,6 @@ as.map = {
                 catch (error) {
                     console.log(error);
                 }
-                //var circle = new google.maps.Circle({ radius: locations[i].radius, center: locations[i], map: as.map.mymap.map });
             }
         }
     },
@@ -236,25 +236,20 @@ as.map = {
     {
         var request;
         if (!cont.reverseGeocoding) {
-            request = "https://maps.googleapis.com/maps/api/geocode/" + cont.outputFormat + "?address=" + cont.adress;
+            request = "https://maps.googleapis.com/maps/api/geocode/json?address=" + cont.adress;
             request += "&key=" + cont.googleKey;
             console.log(request);
             $.ajax({
                 url: request,
                 type: 'GET',
                 success: function (data) {
-                    console.log(data);
                     if (data.status === "OK") {
-                        var locations = [];
-                        for (var i = 0; i < data.results.length; i++) {
-                            var location = new google.maps.LatLng(data.results[i].geometry.location.lat, data.results[i].geometry.location.lng);
-                            console.log(data.results[i].formatted_address);
+                        var location = new google.maps.LatLng(data.results[0].geometry.location.lat, data.results[0].geometry.location.lng);
+                        //тестовое отбражение для найденого положения
                             $('#places').append(
-                                '<option >' + data.results[i].formatted_address + '</option>'
+                                '<option >' + data.results[0].formatted_address + '</option>'
                             );
-                            locations.push(location);
-                        }
-                        return locations;
+                        return location;
                     }
                     //TODO - разобрать обработку ошибок запроса
                     else {
@@ -278,7 +273,7 @@ as.map = {
         }
         //обратное геокодирование
         else {
-            request = "https://maps.googleapis.com/maps/api/geocode/" + cont.outputFormat + "?latlng=" + cont.lat + "," + cont.lng + "&key=" + cont.googleKey;
+            request = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + cont.lat + "," + cont.lng + "&key=" + cont.googleKey;
             console.log(request);
             $.ajax({
                 url: request,
