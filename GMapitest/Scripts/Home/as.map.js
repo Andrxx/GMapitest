@@ -238,6 +238,8 @@ as.map = {
         if (!cont.reverseGeocoding) {
             request = "https://maps.googleapis.com/maps/api/geocode/json?address=" + cont.adress;
             request += "&key=" + cont.googleKey;
+            var token = as.map.guidGenerator();
+            request += "&sessiontoken=" + token;
             console.log(request);
             $.ajax({
                 url: request,
