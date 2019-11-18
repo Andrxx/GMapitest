@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "StaticMap";
+}
+
+<h2>StaticMap</h2>
+
+@*<img id="staticmap" width="400" height="300" />*@
+<div id="test">
+    <a href="#" id="smtest">Click!!!!!</a> <br />
+</div>
+
+<script>
+
+    $(function () {
+        $('#smtest').click(function () {
+            var position = {
+                coords: {
+                    latitude: 43.5868685,
+                    longitude: 39.7299474
+                }
+            };
+            var options = {
+                zoom: 14,
+                width: 400,
+                height: 300,
+                key: 'AIzaSyAHZIqG64ECD89gO7f4e_LbXJwkpnl4Gq0'
+            };
+            $("#test").append("<img  width='400' height='300' src='" + as.map.getStaticMapUrl(position, options) + "' />");
+
+        });
+    });
+</script>

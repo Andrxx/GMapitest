@@ -43,5 +43,10 @@ namespace GMapitest.Controllers
         {
             return View();
         }
+
+        public ActionResult StaticMap()
+        {
+            return View();
+        }
     }
 }

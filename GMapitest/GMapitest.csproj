@@ -191,6 +191,7 @@
     <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Views\Home\GeolocationTest.cshtml" />
     <Content Include="Views\Home\AutocompliteTest.cshtml" />
+    <Content Include="Views\Home\StaticMap.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
