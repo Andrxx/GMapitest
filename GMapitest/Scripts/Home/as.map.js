@@ -329,11 +329,13 @@ as.map = {
             zoom: 14,
             width: 400,
             height: 300,
+            format: 'PNG',
             key: ""
         };
         options = $.extend(defOptions, options);
         var latlon = pos.coords.latitude + "," + pos.coords.longitude;
-        var res = "https://maps.googleapis.com/maps/api/staticmap?center=" + latlon + "&zoom=" + options.zoom + "&size=" + options.width + "x" + options.height + "&sensor=false&key=" + options.key + "";
+        var res = "https://maps.googleapis.com/maps/api/staticmap?center=" + latlon + "&zoom=" + options.zoom + "&size=" +
+            options.width + "x" + options.height + "&format=" + options.format + "&sensor=false&key=" + options.key + "";
         console.log(res);
         return res;
     }
